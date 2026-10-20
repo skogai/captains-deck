@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["pillow"]
+# ///
 """Draw the Captain's Deck icons.
 
 The mark is the board itself: five columns on a dark deck, with the captain's

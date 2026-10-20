@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["aiohttp", "cryptography"]
+# ///
 """Captain's Deck web bridge.
 
 Serves the Captain's Deck board and a PWA over HTTP, and submits Captain's Call
@@ -31,10 +35,6 @@ import time
 import urllib.parse
 
 HERE = pathlib.Path(__file__).resolve().parent
-
-# Herdr lives in ~/.local/bin for this user. A service process may start with a
-# minimal PATH, so the bridge repairs it before the model shells out to `herdr`.
-os.environ["PATH"] = os.environ.get("PATH", "") + ":/home/herdr/.local/bin"
 
 # Herdr often lives in the user's own bin directory. A service process can start
 # with a minimal PATH, so the bridge repairs it before the model shells out to
