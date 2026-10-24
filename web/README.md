@@ -16,7 +16,7 @@ tap a dot to jump.
 
 | Requirement | Why |
 | --- | --- |
-| Python 3.11+ with `aiohttp` and `cryptography` | HTTP, WebSocket and Web Push. No other package is needed |
+| Python 3.11+ with `aiohttp` and `cryptography` | HTTP, WebSocket and Web Push. No other package is needed. With [uv](https://docs.astral.sh/uv/), the scripts' inline metadata installs them |
 | Firstmate with the decision-card store (`state/decision-cards/<task>.json`, `schema: fm-decision-card.v1`) | The ticket dialog reads `options`, `hint`, `recommend_value` and `close` from it |
 | Firstmate whose `bin/fm-captain-hold.sh` defines `wake_answer_owner` | The intake wakes the owning home itself; without it the deck falls back to its own lane wake |
 | A tailnet for the HTTPS origin | A service worker, an installed web app and Web Push all need a secure context |
@@ -27,9 +27,16 @@ hold reason and a freeform answer only.
 ## Run
 
 ```bash
+web/run.sh                       # http://127.0.0.1:8787
+```
+
+`run.sh` draws the icons on first run, then starts the bridge with `uv run` when
+uv is installed, or plain `python3` otherwise. By hand:
+
+```bash
 cd web
-python3 tools/make_icons.py      # once: writes static/icons
-python3 bridge.py                # http://127.0.0.1:8787
+uv run --script tools/make_icons.py   # once: writes static/icons
+uv run --script bridge.py
 ```
 
 | Variable | Default | Meaning |
@@ -53,7 +60,7 @@ After=default.target
 [Service]
 Type=simple
 WorkingDirectory=/path/to/captains-deck/web
-ExecStart=/usr/bin/python3 /path/to/captains-deck/web/bridge.py
+ExecStart=/path/to/captains-deck/web/run.sh
 Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
 Restart=always
 RestartSec=3
@@ -95,7 +102,7 @@ returns a subscription: an endpoint plus two keys the bridge encrypts to
 Check the whole path with no Apple or Google account:
 
 ```bash
-python3 tools/push_selftest.py
+uv run --script tools/push_selftest.py
 ```
 
 It stands in for a push service on loopback, subscribes through the running
