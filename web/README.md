@@ -102,7 +102,7 @@ returns a subscription: an endpoint plus two keys the bridge encrypts to
 Check the whole path with no Apple or Google account:
 
 ```bash
-python3 tools/push_selftest.py
+uv run --script tools/push_selftest.py
 ```
 
 It stands in for a push service on loopback, subscribes through the running
